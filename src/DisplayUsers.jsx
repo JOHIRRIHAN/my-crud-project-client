@@ -1,10 +1,12 @@
 // import React from 'react'
 
-import { useLoaderData } from "react-router-dom"
+import { useState } from "react";
+import { Link, useLoaderData } from "react-router-dom"
 import Swal from "sweetalert2";
 
 const DisplayUsers = () => {
     const displayDatas = useLoaderData();
+    const [users, setUsers] = useState(displayDatas)
 
     const handleDelete = (_id)=>{
         console.log(_id)
@@ -13,6 +15,8 @@ const DisplayUsers = () => {
         }).then(res => res.json())
         .then(data => {
             console.log(data)
+            const filterData = users.filter(item => item._id !==  _id)
+            setUsers(filterData)
             if(data.acknowledged > 0){
                 Swal.fire({
                     title: "Good job!",
@@ -24,15 +28,17 @@ const DisplayUsers = () => {
     }
   return (
     <div>
-        <h3>Display User: {displayDatas.length}</h3>
+        <Link to={'/'}>Go to Home</Link>
+        <h3>Display User: {users.length}</h3>
         <div>
             {
-                displayDatas.map(displayData => <p style={{border: "2px solid black"}} key={displayData._id}>
+                users.map(displayData => <p style={{border: "2px solid black"}} key={displayData._id}>
                     <span>name: {displayData.name}</span> <br />
                     <span>email: {displayData.email}</span> <br />
                     <span>password: {displayData.password}</span> <br />
                     <span>id: {displayData._id}</span> <br />
                     <input onClick={()=> handleDelete(displayData._id)} type="submit" value='Delete' />
+                    <Link to={`/users/${displayData._id}`}><input type="submit" value='Update' /></Link>
                 </p>)
             }
         </div>

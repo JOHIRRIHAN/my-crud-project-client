@@ -1,5 +1,6 @@
 import Swal from "sweetalert2";
 import "./App.css";
+import { Link } from "react-router-dom";
 
 function App() {
 
@@ -32,6 +33,7 @@ function App() {
   }
   return (
     <>
+    <Link to={'/users'}>See Users</Link>
       <h1>User Create</h1>
 
       <form onSubmit={handleAddUser}>
